@@ -20,16 +20,16 @@ public class JetGatlingOptions {
     private String pathFile = "";
 
     @Parameter(names = {"-r", "--rps"},
-            description = "Specify the target RPS (request per second)")
+            description = "Number of RPS (request per second). Cannot be use as the same time of '-c'")
     private int rps = 0;
 
-    private int clients = 0;
+    @Parameter(names = {"-c", "--concurrency"},
+            description = "Number of concurrent request to perform at a time. Cannot be use as the same time of '-r'")
+    private int concurrency = 0;
 
     @Parameter(names = {"-d", "--duration"},
             description = "Duration (in second) for test to run")
     private int durationInSecond = 0;
-
-    private int numberOfRequest = 0;
 
     @Parameter(names = {"-R", "--ramp"},
             description = "Setup ramp up period to gracefully adding load to the target.")
@@ -126,5 +126,9 @@ public class JetGatlingOptions {
 
     public String getBodyFile() {
         return bodyFile;
+    }
+
+    public int getConcurrency() {
+        return concurrency;
     }
 }

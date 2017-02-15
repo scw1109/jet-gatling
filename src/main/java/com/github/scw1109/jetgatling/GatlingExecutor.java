@@ -11,13 +11,13 @@ import org.slf4j.LoggerFactory;
  */
 public class GatlingExecutor {
 
-    private static final String FIX_RPS_SIMULATION = "com.github.scw1109.jetgatling.simulations.FixRpsSimulation";
+    private static final String SIMULATION = "com.github.scw1109.jetgatling.simulations.JetGatlingSimulation";
 
-    public static int execute(JetGatlingOptions options) {
+    static int execute(JetGatlingOptions options) {
         String workingDir = System.getProperty("user.dir");
 
         GatlingPropertiesBuilder builder = new GatlingPropertiesBuilder();
-        builder.simulationClass(FIX_RPS_SIMULATION);
+        builder.simulationClass(SIMULATION);
         builder.dataDirectory(workingDir);
         builder.bodiesDirectory(workingDir);
         builder.mute();

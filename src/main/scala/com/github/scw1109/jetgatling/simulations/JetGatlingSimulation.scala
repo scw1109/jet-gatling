@@ -1,9 +1,5 @@
 package com.github.scw1109.jetgatling.simulations
 
-import java.io.InputStream
-import java.nio.file.{Files, Paths}
-
-import scala.collection.JavaConversions._
 import com.github.scw1109.jetgatling.{JetGatling, JetGatlingOptions}
 import io.gatling.core.Predef._
 import io.gatling.core.feeder.RecordSeqFeederBuilder
@@ -12,16 +8,18 @@ import io.gatling.http.Predef._
 import io.gatling.http.protocol.HttpProtocolBuilder
 import org.slf4j.{Logger, LoggerFactory}
 
+import scala.collection.JavaConverters._
 import scala.concurrent.duration._
 import scala.io.Source
 import scala.language.postfixOps
 
-class FixRpsSimulation extends Simulation {
+class JetGatlingSimulation extends Simulation {
 
   val logger: Logger = LoggerFactory.getLogger(getClass.getName)
   val options: JetGatlingOptions = JetGatling.OPTIONS
 
   val rps: Double = options.getRps
+  val concurrency: Int = options.getConcurrency
   val duration: Int = options.getDurationInSecond
   val rampDuration: Int = options.getRampDurationInSecond
   val baseUrl: String = options.getBaseUrl
@@ -31,7 +29,7 @@ class FixRpsSimulation extends Simulation {
   val httpMethod: String = options.getHttpMethod.toUpperCase
   val keepAlive: Boolean = options.isKeepAlive
   val userAgent: String = options.getUserAgent
-  val httpHeaders: Map[String, String] = options.getHeaders.map(h => {
+  val httpHeaders: Map[String, String] = options.getHeaders.asScala.map(h => {
     val i = h.indexOf(":")
     h.substring(0, i) -> h.substring(i + 1)
   }).toMap
@@ -57,6 +55,7 @@ class FixRpsSimulation extends Simulation {
     .connectionHeader(if (keepAlive) "keep-alive" else "close")
     .userAgentHeader(userAgent)
     .headers(httpHeaders)
+    .disableCaching
 
   val path = "${path}"
   val feeder: RecordSeqFeederBuilder[String] = pathFile match {
@@ -88,17 +87,33 @@ class FixRpsSimulation extends Simulation {
       case _ => http
     }
   ).onSuccess(http => {
-    val scn: ScenarioBuilder =
-      scenario("Fix RPS simulation").feed(feeder).exec(http)
+    val scn: ScenarioBuilder = concurrency match {
+      case 0 => scenario("Fix RPS simulation")
+        .feed(feeder).exec(http)
+      case _ => scenario("Fix Concurrent simulation")
+        .feed(feeder)
+        .during(duration) {
+          exec(http)
+        }
+    }
 
-    setUp(
-      scn.inject(
+    val steps = concurrency match {
+      case 0 => Array(
         rampDuration match {
           case 0 => nothingFor(0)
           case _ => rampUsersPerSec(1) to rps during (rampDuration seconds)
         },
         constantUsersPerSec(rps) during (duration seconds)
-      ).protocols(httpConf)
-    )
+      )
+      case _ => Array(
+        rampDuration match {
+          case 0 => atOnceUsers(concurrency)
+          case _ => rampUsers(concurrency) over (rampDuration seconds)
+        }
+      )
+    }
+
+    setUp(scn.inject(steps).protocols(httpConf))
+
   }).onFailure(logger.error)
 }
