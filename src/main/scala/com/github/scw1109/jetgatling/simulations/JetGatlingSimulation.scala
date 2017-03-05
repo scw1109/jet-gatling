@@ -22,7 +22,11 @@ class JetGatlingSimulation extends Simulation {
   val concurrency: Int = options.getConcurrency
   val duration: Int = options.getDurationInSecond
   val rampDuration: Int = options.getRampDurationInSecond
-  val baseUrl: String = options.getBaseUrl
+  val baseUrl: String = options.getBaseUrl match {
+    case httpUrl if httpUrl.startsWith("http://") => httpUrl
+    case httpsUrl if httpsUrl.startsWith("https://") => httpsUrl
+    case url => "http://" + url
+  }
   val pathFile: String = options.getPathFile
   val timeout: Int = options.getTimeout
 
@@ -37,17 +41,19 @@ class JetGatlingSimulation extends Simulation {
 
   logger.info("Running with the following parameters")
   logger.info("RPS: {}", rps)
-  logger.info("Duration: {} second", duration)
-  logger.info("Ramp up duration: {} second", rampDuration)
+  logger.info("Concurrency: {}", concurrency)
+  logger.info("Duration: {} seconds", duration)
+  logger.info("Ramp up duration: {} seconds", rampDuration)
   logger.info("Base url: {}", baseUrl)
   logger.info("Path file: {}", pathFile)
-  logger.info("Timeout: {} millisecond", timeout)
+  logger.info("Timeout: {} milliseconds", timeout)
   logger.info("-----")
   logger.info("HTTP method: {}", httpMethod)
   logger.info("Keep alive: {}", keepAlive)
   logger.info("User agent: {}", userAgent)
   logger.info("HTTP headers: {}", httpHeaders)
   logger.info("HTTP body file: {}", options.getBodyFile)
+  logger.info("-----")
 
   val httpConf: HttpProtocolBuilder = http
     .baseURL(baseUrl)
@@ -55,15 +61,23 @@ class JetGatlingSimulation extends Simulation {
     .connectionHeader(if (keepAlive) "keep-alive" else "close")
     .userAgentHeader(userAgent)
     .headers(httpHeaders)
+    .warmUp(baseUrl)
     .disableCaching
 
-  val path = "${path}"
-  val feeder: RecordSeqFeederBuilder[String] = pathFile match {
-    case "" => Array(Map("path" -> "")).circular
+  val path: String = concurrency match {
+    case 0 => "${path}"
+    case _ => ""
+  }
+  val feeder: RecordSeqFeederBuilder[String] = (pathFile match {
+    case "" => Array(Map("path" -> ""))
     case _ => Source.fromFile(pathFile).getLines()
       .map(line => Map("path" -> line))
-      .toArray.circular
-  }
+      .toArray
+  }).circular
+
+  logger.info("HTTP conf: {}", httpConf)
+  logger.info("Path: {}", path)
+  logger.info("Feeder: {}", feeder)
 
   http("http").map(
     httpMethod match {
@@ -89,10 +103,10 @@ class JetGatlingSimulation extends Simulation {
   ).onSuccess(http => {
     val scn: ScenarioBuilder = concurrency match {
       case 0 => scenario("Fix RPS simulation")
-        .feed(feeder).exec(http)
-      case _ => scenario("Fix Concurrent simulation")
         .feed(feeder)
-        .during(duration) {
+        .exec(http)
+      case _ => scenario("Fix Concurrent simulation")
+        .during(duration seconds) {
           exec(http)
         }
     }
@@ -101,17 +115,22 @@ class JetGatlingSimulation extends Simulation {
       case 0 => Array(
         rampDuration match {
           case 0 => nothingFor(0)
-          case _ => rampUsersPerSec(1) to rps during (rampDuration seconds)
+          case _ => rampUsersPerSec(1) to (rps * 0.5) during (rampDuration seconds)
         },
         constantUsersPerSec(rps) during (duration seconds)
       )
       case _ => Array(
         rampDuration match {
-          case 0 => atOnceUsers(concurrency)
+          case 0 => nothingFor(0)
           case _ => rampUsers(concurrency) over (rampDuration seconds)
-        }
+        },
+        atOnceUsers(concurrency)
       )
     }
+
+    logger.info("Scenario: {}", scn)
+    logger.info("Steps: {}", steps)
+    logger.info("-----")
 
     setUp(scn.inject(steps).protocols(httpConf))
 

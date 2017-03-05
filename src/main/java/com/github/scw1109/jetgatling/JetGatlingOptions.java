@@ -1,6 +1,8 @@
 package com.github.scw1109.jetgatling;
 
 import com.beust.jcommander.Parameter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,6 +11,8 @@ import java.util.List;
  * @author scw1109
  */
 public class JetGatlingOptions {
+
+    private transient Logger logger = LoggerFactory.getLogger(getClass().getName());
 
     @Parameter(names = {"-u", "--url"},
             description = "Base url (or target url if --paths is not provided), in format of [http[s]://]hostname[:port][/path]",
@@ -24,7 +28,8 @@ public class JetGatlingOptions {
     private int rps = 0;
 
     @Parameter(names = {"-c", "--concurrency"},
-            description = "Number of concurrent request to perform at a time. Cannot be use as the same time of '-r'")
+            description = "Number of concurrent request to perform at a time. Cannot be use as the same time of '-r'. " +
+                    "Also, this option can only test a single path, hence cannot use with '-p'.")
     private int concurrency = 0;
 
     @Parameter(names = {"-d", "--duration"},
@@ -36,7 +41,8 @@ public class JetGatlingOptions {
     private int rampDurationInSecond = 0;
 
     @Parameter(names = {"-s", "--timeout"},
-            description = "Maximum number of millisecond to wait before timeout for each request. Negative number means using Gatling default value.")
+            description = "Maximum number of millisecond to wait before timeout for each request. " +
+                    "Negative number means using Gatling default value.")
     private int timeout = -1;
 
     @Parameter(names = {"-m", "--http-method"},
@@ -44,11 +50,12 @@ public class JetGatlingOptions {
     private String httpMethod = "GET";
 
     @Parameter(names = {"-b", "--body"},
-            description = "A file contains body data of POST/PUT. Remember to also set 'Content-Type' header.")
+            description = "A file contains body data of POST/PUT. Remember to also set 'Content-Type' header using '-h'.")
     private String bodyFile = "";
 
     @Parameter(names = {"-H", "--header"},
-            description = "Extra headers to the request. The argument is typically in the form of a valid header line, containing a colon-separated field-value pair (i.e., \"Accept-Encoding: zip/zop;8bit\"). This field is repeatable.")
+            description = "Extra headers to the request. The argument is typically in the form of a valid header line, " +
+                    "containing a colon-separated field-value pair (i.e., \"Accept-Encoding: zip/zop;8bit\"). This field is repeatable.")
     private List<String> headers = new ArrayList<>();
 
     @Parameter(names = {"-a", "--agent"},
@@ -72,6 +79,18 @@ public class JetGatlingOptions {
             help = true)
     private boolean help = false;
 
+    boolean isDebug() {
+        return debug;
+    }
+
+    boolean isTrace() {
+        return trace;
+    }
+
+    boolean isHelp() {
+        return help;
+    }
+
     public String getBaseUrl() {
         return baseUrl;
     }
@@ -90,18 +109,6 @@ public class JetGatlingOptions {
 
     public int getRampDurationInSecond() {
         return rampDurationInSecond;
-    }
-
-    public boolean isDebug() {
-        return debug;
-    }
-
-    public boolean isTrace() {
-        return trace;
-    }
-
-    public boolean isHelp() {
-        return help;
     }
 
     public int getTimeout() {
@@ -130,5 +137,17 @@ public class JetGatlingOptions {
 
     public int getConcurrency() {
         return concurrency;
+    }
+
+    boolean check() {
+        if (concurrency != 0 && rps != 0) {
+            logger.error("Concurrency option cannot use together with RPS.");
+            return false;
+        } else if (concurrency != 0 && !"".equals(pathFile)) {
+            logger.info("Concurrency option cannot use together with path file.");
+            return false;
+        }
+
+        return true;
     }
 }

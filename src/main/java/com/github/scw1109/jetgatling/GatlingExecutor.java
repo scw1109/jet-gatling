@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory;
 /**
  * @author scw1109
  */
-public class GatlingExecutor {
+class GatlingExecutor {
 
     private static final String SIMULATION = "com.github.scw1109.jetgatling.simulations.JetGatlingSimulation";
 
@@ -32,6 +32,7 @@ public class GatlingExecutor {
             LoggerContext loggerContext = (LoggerContext) LoggerFactory.getILoggerFactory();
             loggerContext.getLogger("io.gatling.http.ahc").setLevel(logLevel);
             loggerContext.getLogger("io.gatling.http.response").setLevel(logLevel);
+            loggerContext.getLogger("io.gatling.app").setLevel(logLevel);
             loggerContext.getLogger("com.github.scw1109.jetgatling").setLevel(logLevel);
         }
 
