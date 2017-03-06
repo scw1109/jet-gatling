@@ -31,21 +31,19 @@
             <url>http://www.apache.org/license/LICENSE-2.0.txt</url>
         </license>
     </licenses>
-    <!--
-        <scm>
-            <connection>scm:git:https//github.com/scw1109/dimensional-config.git</connection>
-            <developerConnection>scm:git::git@github.com:scw1109/dimensional-config.git</developerConnection>
-            <url>https://github.com/scw1109/dimensional-config</url>
-        </scm>
-        <ciManagement>
-            <system>Travis CI</system>
-            <url>https://travis-ci.org/scw1109/dimensional-config</url>
-        </ciManagement>
-        <issueManagement>
-            <system>GitHub Issues</system>
-            <url>https://github.com/scw1109/dimensional-config/issues</url>
-        </issueManagement>
-    -->
+    <scm>
+        <connection>scm:git:https//github.com/scw1109/jet-gatling.git</connection>
+        <developerConnection>scm:git::git@github.com:scw1109/jet-gatling.git</developerConnection>
+        <url>https://github.com/scw1109/jet-gatling</url>
+    </scm>
+    <ciManagement>
+        <system>Travis CI</system>
+        <url>https://travis-ci.org/scw1109/jet-gatling</url>
+    </ciManagement>
+    <issueManagement>
+        <system>GitHub Issues</system>
+        <url>https://github.com/scw1109/jet-gatling/issues</url>
+    </issueManagement>
     <repositories>
         <repository>
             <id>jitpack.io</id>
