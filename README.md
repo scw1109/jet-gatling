@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/scw1109/jet-gatling.svg?branch=master)](https://travis-ci.org/scw1109/jet-gatling)
 [![Release Status](https://jitpack.io/v/scw1109/jet-gatling.svg)](https://jitpack.io/#scw1109/jet-gatling)
-[![Dependency Status](https://www.versioneye.com/user/projects/584d185fbcc3a2004edfbe4b/badge.svg?style=flat-square)](https://www.versioneye.com/user/projects/584d185fbcc3a2004edfbe4b)
+[![Dependency Status](https://www.versioneye.com/user/projects/58bce50c01b5b7003d620a56/badge.svg?style=flat-square)](https://www.versioneye.com/user/projects/58bce50c01b5b7003d620a56)
 
 [![SQALE debt ratio](https://img.shields.io/sonar/http/sonarqube.com/com.github.scw1109:jet-gatling/sqale_debt_ratio.svg?label=SQALE%20debt%20ratio)](https://sonarqube.com/dashboard/?id=com.github.scw1109%3Ajet-gatling)
 [![Blocker violations](https://img.shields.io/sonar/http/sonarqube.com/com.github.scw1109:jet-gatling/blocker_violations.svg?label=Blocker%20violations)](https://sonarqube.com/component_issues/index?id=com.github.scw1109%3Ajet-gatling#facetMode=count|severities=BLOCKER)
