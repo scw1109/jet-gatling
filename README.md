@@ -5,7 +5,7 @@
 [![Dependency Status](https://www.versioneye.com/user/projects/58bce50c01b5b7003d620a56/badge.svg?style=flat-square)](https://www.versioneye.com/user/projects/58bce50c01b5b7003d620a56)
 
 [![Quality gate](https://sonarqube.com/api/badges/gate?key=com.github.scw1109:jet-gatling)](https://sonarqube.com/dashboard/?id=com.github.scw1109%3Ajet-gatling)
-[![Blocker violations](https://sonarqube.com/api/badges/measure?key=com.github.scw1109:jet-gatling&metric=blocker_violations)](https://sonarqube.com/component_issues/index?id=com.github.scw1109%3Ajet-gatling#facetMode=count|severities=BLOCKER)
+[![Open issues](https://sonarqube.com/api/badges/measure?key=com.github.scw1109:jet-gatling&metric=open_issues)](https://sonarqube.com/component_issues?id=com.github.scw1109%3Ajet-gatling)
 [![Lines of code](https://sonarqube.com/api/badges/measure?key=com.github.scw1109:jet-gatling&metric=ncloc)](https://sonarqube.com/component_measures/metric/ncloc/list?id=com.github.scw1109%3Ajet-gatling)
 [![Coverage](https://sonarqube.com/api/badges/measure?key=com.github.scw1109:jet-gatling&metric=coverage)](https://sonarqube.com/component_measures/metric/coverage/list?id=com.github.scw1109%3Ajet-gatling)
 [![Class complexity](https://sonarqube.com/api/badges/measure?key=com.github.scw1109:jet-gatling&metric=class_complexity)](https://sonarqube.com/component_measures/metric/class_complexity/list?id=com.github.scw1109%3Ajet-gatling)
