@@ -25,7 +25,6 @@ import static com.xebialabs.restito.semantics.Condition.post;
 import static com.xebialabs.restito.semantics.Condition.uri;
 import static com.xebialabs.restito.semantics.Condition.withHeader;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 /**
@@ -120,11 +119,11 @@ public class JetGatlingTest {
         assertEquals(0, returnCode);
 
         // 1 automatic warm-up request
-        // 10 gatling load request
-        verifyHttp(stubServer).times(1 + 10,
+        // ~10 gatling load request
+        List<Call> calls = filterByConditions(stubServer.getCalls(),
                 method(Method.GET),
-                uri("/")
-        );
+                uri("/"));
+        assertRangeBetween(calls.size(), 8, 12);
     }
 
     @Test
@@ -153,7 +152,7 @@ public class JetGatlingTest {
         List<Call> calls = filterByConditions(stubServer.getCalls(),
                 method(Method.GET),
                 uri("/"));
-        assertTrue(calls.size() > 25 && calls.size() < 35);
+        assertRangeBetween(calls.size(), 25, 35);
     }
 
     @Test
@@ -182,7 +181,7 @@ public class JetGatlingTest {
         List<Call> calls = filterByConditions(stubServer.getCalls(),
                 method(Method.GET),
                 uri("/"));
-        assertTrue(calls.size() > 6 && calls.size() < 10);
+        assertRangeBetween(calls.size(), 6, 10);
     }
 
     @Test
@@ -212,7 +211,7 @@ public class JetGatlingTest {
         List<Call> calls = filterByConditions(stubServer.getCalls(),
                 method(Method.GET),
                 uri("/"));
-        assertTrue(calls.size() > 10 && calls.size() < 14);
+        assertRangeBetween(calls.size(), 10, 14);
     }
 
     @Test
@@ -420,7 +419,7 @@ public class JetGatlingTest {
         List<Call> calls = filterByConditions(stubServer.getCalls(),
                 method(Method.GET),
                 uri("/"));
-        assertTrue(calls.size() > 50 && calls.size() < 60);
+        assertRangeBetween(calls.size(), 50, 60);
     }
 
     private List<Call> filterByConditions(List<Call> calls, Condition... conditions) {
@@ -430,6 +429,16 @@ public class JetGatlingTest {
             filteredCalls.removeIf(call -> !condition.getPredicate().test(call));
         }
         return filteredCalls;
+    }
+
+    private void assertRangeBetween(int target, int lowerBound, int upperBound) {
+        if (target < lowerBound || target > upperBound) {
+            String message = "Calls should between expected range.\n" +
+                    "Target number: " + target +
+                    " , lower bound: " + lowerBound +
+                    " , upper bound: " + upperBound;
+            fail(message);
+        }
     }
 
     /**
