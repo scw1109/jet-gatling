@@ -414,12 +414,12 @@ public class JetGatlingTest {
         assertEquals(0, returnCode);
 
         // 1 automatic warm-up request
-        // ~25 ramp up request
+        // ~25+ ramp up request
         // ~30 gatling load request
         List<Call> calls = filterByConditions(stubServer.getCalls(),
                 method(Method.GET),
                 uri("/"));
-        assertRangeBetween(calls.size(), 50, 60);
+        assertRangeBetween(calls.size(), 50, 65);
     }
 
     private List<Call> filterByConditions(List<Call> calls, Condition... conditions) {
