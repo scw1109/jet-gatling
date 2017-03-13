@@ -17,7 +17,7 @@ mvn package
 ### CI
 
 This project use [Travis CI](https://travis-ci.org/) as the CI build system. 
-Visit [here](https://travis-ci.org/scw1109/dimensional-config) to see the build status.
+Visit [here](https://travis-ci.org/scw1109/jet-gatling) to see the build status.
  
 #### Setup notes
 
@@ -39,7 +39,7 @@ then one can add a repository to Versioneye and checks the dependencies and lice
 ### Sonarqube
 
 [Sonarqube](https://sonarqube.com/) is used to analysis the code quality.
-Visit [here](https://sonarqube.com/dashboard?id=com.github.scw1109%3Adimensional-config) to see more details.
+Visit [here](https://sonarqube.com/dashboard?id=com.github.scw1109%3Ajet-gatling) to see more details.
 
 #### Setup notes
 
@@ -50,7 +50,7 @@ note that one must use ```travis encrypt``` to encrypt the token. And different 
 ## Release
 
 [JitPack](https://jitpack.io/) is used to release and publish the artifacts.
-Visit [here](https://jitpack.io/#scw1109/dimensional-config) for more details.
+Visit [here](https://jitpack.io/#scw1109/jet-gatling) for more details.
 
 Although JitPack is used as a release tool here, 
 it includes the responsibility of building the final publish artifact.
