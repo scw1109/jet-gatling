@@ -13,7 +13,7 @@
         <java.version>1.8</java.version>
         <!-- Gatling runtime is depending on scala 2.11.8 -->
         <scala.version>2.11.8</scala.version>
-        <gatling.version>2.2.3</gatling.version>
+        <gatling.version>2.2.4</gatling.version>
     </properties>
     <prerequisites>
         <maven>3.0.4</maven>
