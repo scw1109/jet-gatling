@@ -63,12 +63,15 @@ class JetGatlingSimulation extends Simulation {
     .headers(httpHeaders)
     .warmUp(baseUrl)
     .disableCaching
-    .shareConnections
-
-  val path: String = concurrency match {
-    case 0 => "${path}"
-    case _ => ""
-  }
+    .map(conf =>
+      // Share connections across simulation users for Fix RPS
+      concurrency match {
+        case 0 => conf.shareConnections
+        case _ => conf
+      }
+    ).get
+  
+  val path: String = "${path}"
   val feeder: RecordSeqFeederBuilder[String] = (pathFile match {
     case "" => Array(Map("path" -> ""))
     case _ => Source.fromFile(pathFile).getLines()
@@ -77,10 +80,8 @@ class JetGatlingSimulation extends Simulation {
   }).circular
 
   logger.info("HTTP conf: {}", httpConf)
-  logger.info("Path: {}", if (path.length < 1000) path
-                          else path.substring(0, 1000) +
-                               "... [" + path.length + " bytes]" )
-  logger.info("Feeder: {}", feeder)
+  logger.info("Path: {}", path)
+  logger.info("Feeder size: {}", feeder.records.size)
 
   http("http").map(
     httpMethod match {
@@ -110,7 +111,7 @@ class JetGatlingSimulation extends Simulation {
         .exec(http)
       case _ => scenario("Fix Concurrent simulation")
         .during(duration seconds) {
-          exec(http)
+          feed(feeder).exec(http)
         }
     }
 

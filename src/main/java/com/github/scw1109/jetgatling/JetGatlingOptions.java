@@ -28,8 +28,7 @@ public class JetGatlingOptions {
     private int rps = 0;
 
     @Parameter(names = {"-c", "--concurrency"},
-            description = "Number of concurrent request to perform at a time. Cannot be use as the same time of '-r'. " +
-                    "Also, this option can only test a single path, hence cannot use with '-p'.")
+            description = "Number of concurrent request to perform at a time. Cannot be use as the same time of '-r'")
     private int concurrency = 0;
 
     @Parameter(names = {"-d", "--duration"},
@@ -142,9 +141,6 @@ public class JetGatlingOptions {
     boolean check() {
         if (concurrency != 0 && rps != 0) {
             logger.error("Concurrency option cannot use together with RPS.");
-            return false;
-        } else if (concurrency != 0 && !"".equals(pathFile)) {
-            logger.info("Concurrency option cannot use together with path file.");
             return false;
         }
 
