@@ -63,6 +63,7 @@ class JetGatlingSimulation extends Simulation {
     .headers(httpHeaders)
     .warmUp(baseUrl)
     .disableCaching
+    .shareConnections
 
   val path: String = concurrency match {
     case 0 => "${path}"
@@ -76,7 +77,9 @@ class JetGatlingSimulation extends Simulation {
   }).circular
 
   logger.info("HTTP conf: {}", httpConf)
-  logger.info("Path: {}", path)
+  logger.info("Path: {}", if (path.length < 1000) path
+                          else path.substring(0, 1000) +
+                               "... [" + path.length + " bytes]" )
   logger.info("Feeder: {}", feeder)
 
   http("http").map(
