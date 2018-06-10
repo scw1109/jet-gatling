@@ -60,9 +60,8 @@ public class JetGatlingTest {
 
         assertEquals(0, returnCode);
 
-        // 1 automatic warm-up request
         // 6 gatling load request
-        verifyHttp(stubServer).times(1 + 6,
+        verifyHttp(stubServer).times(6,
                                      method(Method.GET),
                                      uri("/")
         );
@@ -89,9 +88,8 @@ public class JetGatlingTest {
 
         assertEquals(0, returnCode);
 
-        // 1 automatic warm-up request
         // 10 gatling load request
-        verifyHttp(stubServer).times(1 + 10,
+        verifyHttp(stubServer).times(10,
                                      method(Method.GET),
                                      uri("/")
         );
@@ -119,7 +117,6 @@ public class JetGatlingTest {
 
         assertEquals(0, returnCode);
 
-        // 1 automatic warm-up request
         // ~10 gatling load request
         List<Call> calls = filterByConditions(stubServer.getCalls(),
                                               method(Method.GET),
@@ -148,7 +145,6 @@ public class JetGatlingTest {
 
         assertEquals(0, returnCode);
 
-        // 1 automatic warm-up request
         // ~30 gatling load request
         List<Call> calls = filterByConditions(stubServer.getCalls(),
                                               method(Method.GET),
@@ -177,7 +173,6 @@ public class JetGatlingTest {
 
         assertEquals(0, returnCode);
 
-        // 1 automatic warm-up request
         // ~8 gatling load request
         List<Call> calls = filterByConditions(stubServer.getCalls(),
                                               method(Method.GET),
@@ -207,7 +202,6 @@ public class JetGatlingTest {
 
         assertEquals(0, returnCode);
 
-        // 1 automatic warm-up request
         // ~12 gatling load request
         List<Call> calls = filterByConditions(stubServer.getCalls(),
                                               method(Method.GET),
@@ -217,11 +211,6 @@ public class JetGatlingTest {
 
     @Test
     public void testRps_withPathFile() {
-        // For baseUrl automatic warm-up
-        whenHttp(stubServer)
-            .match(get("/"))
-            .then(ok());
-
         // For the two urls in path file
         whenHttp(stubServer)
             .match(get("/a"))
@@ -245,10 +234,6 @@ public class JetGatlingTest {
 
         assertEquals(0, returnCode);
 
-        verifyHttp(stubServer).times(1,
-                                     method(Method.GET),
-                                     uri("/")
-        );
         verifyHttp(stubServer).times(6,
                                      method(Method.GET),
                                      uri("/a")
@@ -261,11 +246,6 @@ public class JetGatlingTest {
 
     @Test
     public void testConcurrent_withPathFile() {
-        // For baseUrl automatic warm-up
-        whenHttp(stubServer)
-            .match(get("/"))
-            .then(ok());
-
         // For the two urls in path file
         whenHttp(stubServer)
             .match(get("/a"))
@@ -303,10 +283,6 @@ public class JetGatlingTest {
 
         assertEquals(0, returnCode);
 
-        verifyHttp(stubServer).times(1,
-                                     method(Method.GET),
-                                     uri("/")
-        );
         verifyHttp(stubServer).atLeast(25,
                                      method(Method.GET),
                                      uri("/a")
@@ -319,11 +295,6 @@ public class JetGatlingTest {
 
     @Test
     public void testRps_post() {
-        // For baseUrl automatic warm-up
-        whenHttp(stubServer)
-            .match(get("/"))
-            .then(ok());
-
         // For the post urls
         whenHttp(stubServer)
             .match(post("/"))
@@ -346,10 +317,6 @@ public class JetGatlingTest {
 
         assertEquals(0, returnCode);
 
-        verifyHttp(stubServer).times(1,
-                                     method(Method.GET),
-                                     uri("/")
-        );
         verifyHttp(stubServer).times(6,
                                      method(Method.POST),
                                      uri("/")
@@ -378,7 +345,7 @@ public class JetGatlingTest {
 
         assertEquals(0, returnCode);
 
-        verifyHttp(stubServer).times(1 + 6,
+        verifyHttp(stubServer).times(6,
                                      method(Method.GET),
                                      uri("/")
         );
@@ -409,7 +376,7 @@ public class JetGatlingTest {
 
         assertEquals(0, returnCode);
 
-        verifyHttp(stubServer).times(1 + 6,
+        verifyHttp(stubServer).times(6,
                                      method(Method.GET),
                                      uri("/")
         );
@@ -439,10 +406,9 @@ public class JetGatlingTest {
 
         assertEquals(0, returnCode);
 
-        // 1 automatic warm-up request
         // 5+ ramp up request
         // 6 gatling load request
-        verifyHttp(stubServer).atLeast(1 + 5 + 6,
+        verifyHttp(stubServer).atLeast(5 + 6,
                                        method(Method.GET),
                                        uri("/")
         );
@@ -470,7 +436,6 @@ public class JetGatlingTest {
 
         assertEquals(0, returnCode);
 
-        // 1 automatic warm-up request
         // ~25+ ramp up request
         // ~30 gatling load request
         List<Call> calls = filterByConditions(stubServer.getCalls(),

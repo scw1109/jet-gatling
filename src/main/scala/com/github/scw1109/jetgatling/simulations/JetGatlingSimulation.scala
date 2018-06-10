@@ -61,7 +61,7 @@ class JetGatlingSimulation extends Simulation {
     .connectionHeader(if (keepAlive) "keep-alive" else "close")
     .userAgentHeader(userAgent)
     .headers(httpHeaders)
-    .warmUp(baseUrl)
+    .disableWarmUp
     .disableCaching
     .map(conf =>
       // Share connections across simulation users for Fix RPS
