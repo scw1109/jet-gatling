@@ -17,7 +17,7 @@ make the use of [Gatling](http://gatling.io/) without the trouble of writing the
 [Gatling](http://gatling.io/) is a great load testing tool. 
 However it requires one to write the scenario in DSL to start a load testing.
 
-This is not as convenient as using simple benchmarking tool like [ab](https://httpd.apache.org/docs/2.4/programs/ab.html) or [wrk](https://httpd.apache.org/docs/2.4/programs/ab.html).
+This is not as convenient as using simple benchmarking tool like [ab](https://httpd.apache.org/docs/2.4/programs/ab.html) or [wrk](https://github.com/wg/wrk).
 
 Hence, JetGatling provides a scenario DSL which covers simple common use cases, 
 make the usage of [Gatling](http://gatling.io/) as easy as [ab](https://httpd.apache.org/docs/2.4/programs/ab.html).
