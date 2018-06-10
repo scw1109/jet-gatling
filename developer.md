@@ -1,8 +1,9 @@
 # Developer notes
 
 ## Prerequisites
-  * Java version >= 1.8
-  * Maven version >= 3.0.3
+  * Java version = 1.8
+    * Gatling is not working well for jdk9/jdk10 due to scala 2.12 supports only jdk 1.8
+  * Maven version >= 3.0.4
 
 ## Build
 ### Locally
@@ -23,29 +24,6 @@ Visit [here](https://travis-ci.org/scw1109/jet-gatling) to see the build status.
 
 Travis CI is sync with the personal Github repositories, 
 which allow one to turn on/off each Github repo on Travis CI account management page.
-
-## Code Analysis
-
-### Versioneye
-
-[Versioneye](https://www.versioneye.com/) is used to check the dependencies of this project.
-Visit [here](https://www.versioneye.com/user/projects/584d185fbcc3a2004edfbe4b) to see more details.
-
-#### Setup notes
-
-Grant read access of Github repositories to Versioneye, 
-then one can add a repository to Versioneye and checks the dependencies and license.
-
-### Sonarqube
-
-[Sonarqube](https://sonarqube.com/) is used to analysis the code quality.
-Visit [here](https://sonarqube.com/dashboard?id=com.github.scw1109%3Ajet-gatling) to see more details.
-
-#### Setup notes
-
-Follow the instruction [here](https://docs.travis-ci.com/user/sonarqube/#SonarQube-Scanner-for-Maven) to integrate Sonarqube checks into maven build.
-The authentication token can be generated in Sonarqube account page, 
-note that one must use ```travis encrypt``` to encrypt the token. And different Github repository should have its own toekn generated from Sonarqube.
 
 ## Release
 

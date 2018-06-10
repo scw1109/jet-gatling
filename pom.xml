@@ -5,7 +5,7 @@
 
     <groupId>com.github.scw1109</groupId>
     <artifactId>jet-gatling</artifactId>
-    <version>0.6</version>
+    <version>0.7</version>
     <packaging>jar</packaging>
     <name>jet-gatling</name>
     <properties>

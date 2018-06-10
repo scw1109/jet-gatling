@@ -2,13 +2,6 @@
 
 [![Build Status](https://travis-ci.org/scw1109/jet-gatling.svg?branch=master)](https://travis-ci.org/scw1109/jet-gatling)
 [![Release Status](https://jitpack.io/v/scw1109/jet-gatling.svg)](https://jitpack.io/#scw1109/jet-gatling)
-[![Dependency Status](https://www.versioneye.com/user/projects/58bce50c01b5b7003d620a56/badge.svg?style=flat-square)](https://www.versioneye.com/user/projects/58bce50c01b5b7003d620a56)
-
-[![Quality gate](https://sonarqube.com/api/badges/gate?key=com.github.scw1109:jet-gatling)](https://sonarqube.com/dashboard/?id=com.github.scw1109%3Ajet-gatling)
-[![Open issues](https://sonarqube.com/api/badges/measure?key=com.github.scw1109:jet-gatling&metric=open_issues)](https://sonarqube.com/component_issues?id=com.github.scw1109%3Ajet-gatling)
-[![Lines of code](https://sonarqube.com/api/badges/measure?key=com.github.scw1109:jet-gatling&metric=ncloc)](https://sonarqube.com/component_measures/metric/ncloc/list?id=com.github.scw1109%3Ajet-gatling)
-[![Coverage](https://sonarqube.com/api/badges/measure?key=com.github.scw1109:jet-gatling&metric=coverage)](https://sonarqube.com/component_measures/metric/coverage/list?id=com.github.scw1109%3Ajet-gatling)
-[![Class complexity](https://sonarqube.com/api/badges/measure?key=com.github.scw1109:jet-gatling&metric=class_complexity)](https://sonarqube.com/component_measures/metric/class_complexity/list?id=com.github.scw1109%3Ajet-gatling)
 
 [![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](http://www.apache.org/license/LICENSE-2.0.txt)
 
@@ -38,15 +31,16 @@ visit [here](https://hub.docker.com/r/scw1109/jet-gatling/) for more information
 
 ### Download Jar file 
 
-Download the the jar file from this [link](https://jitpack.io/com/github/scw1109/jet-gatling/0.1/jet-gatling-0.1.jar)
+Download the the jar file from this command
 
 ```
-https://jitpack.io/com/github/scw1109/jet-gatling/0.5/jet-gatling-0.5.jar
+v=`curl "https://api.github.com/repos/scw1109/jet-gatling/releases/latest" | grep "tag_name" | awk -F'"' '{print $4}'`; wget https://jitpack.io/com/github/scw1109/jet-gatling/$v/jet-gatling-$v.jar
 ```
 
 ### Usage
 
- * Requires JDK 1.8 or higher
+ * Requires JDK 1.8
+   * Gatling is not working well for jdk9/jdk10 due to scala 2.12 supports only jdk 1.8
 
 #### Run a simple load test (Fixed RPS mode)
 
