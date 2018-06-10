@@ -119,7 +119,7 @@ class JetGatlingSimulation extends Simulation {
       case 0 => Array(
         rampDuration match {
           case 0 => nothingFor(0)
-          case _ => rampUsersPerSec(1) to (rps * 0.5) during (rampDuration seconds)
+          case _ => rampUsersPerSec(1) to rps during (rampDuration seconds)
         },
         constantUsersPerSec(rps) during (duration seconds)
       )
